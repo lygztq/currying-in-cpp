@@ -49,7 +49,8 @@ struct currying<R(Arg0, RemainArgs...)> {
 
   auto operator()(Arg0 arg0) -> currying<R(RemainArgs...)> {
     return currying<R(RemainArgs...)>(
-      [this, &arg0](RemainArgs... remain_args) -> R {
+      [*this, arg0](RemainArgs... remain_args) -> R {
+        std::cout << std::boolalpha << arg0 << std::endl;
         return fn(arg0, remain_args...);
       }
     );
@@ -67,6 +68,7 @@ struct currying<R(Arg0)> {
   : fn(fn) {}
 
   auto operator()(Arg0 arg0) -> R {
+    std::cout << std::boolalpha << arg0 << std::endl;
     return this->fn(arg0);
   }
 };
